@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken")
+const bodyParser = require("body-parser")
 const { GraphQLServer } = require("graphql-yoga")
 const { rule, shield, and, or, not } = require("graphql-shield")
 const mongo = require("mongodb").MongoClient
@@ -65,5 +66,8 @@ const server = new GraphQLServer({
   }),
   middlewares: [permissions]
 })
+
+server.express.use(bodyParser.json({ limit: "50mb" }))
+server.express.use(bodyParser.urlencoded({ limit: "50mb", extended: true }))
 
 server.start(() => console.log("Server is running on localhost:4000"))
