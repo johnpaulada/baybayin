@@ -27,8 +27,19 @@ function getClaims(req) {
   }
 }
 
+function getUsername(req) {
+  try {
+    const token = jwt.verify(req.request.get("Authorization"), JWT_SECRET, {
+      algorithm: "HS256"
+    })
+    return token.username
+  } catch (e) {
+    return null
+  }
+}
+
 const isAuthenticated = rule()(async (parent, args, ctx, info) => {
-  return false
+  return Boolean(ctx.username)
 })
 
 const permissions = shield({
@@ -46,7 +57,12 @@ const permissions = shield({
 const server = new GraphQLServer({
   typeDefs,
   resolvers,
-  context: req => ({ ...req, workOnDb, claims: getClaims(req) }),
+  context: req => ({
+    ...req,
+    workOnDb,
+    claims: getClaims(req),
+    username: getUsername(req)
+  }),
   middlewares: [permissions]
 })
 
