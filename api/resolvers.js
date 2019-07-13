@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken")
-
+const fetch = require("isomorphic-fetch")
+const FormData = require('form-data')
 const JWT_SECRET = "NOT_SO_SECRET"
+const ML_API_URL = "http://localhost:5000/fromImage/"
 
 const generateTranslators = () => {
   const translatorMap = new Map()
@@ -11,20 +13,28 @@ const generateTranslators = () => {
 
 const translators = generateTranslators()
 
-// TODO: Infer language
 const inferLanguage = _text => "FILIPINO"
 
-// TODO: Request from ML Server
-const requestBaybayinOcr = ({ _url, data }) => {
-  return "bagsik"
+const requestBaybayinOcr = async ({ _url, data }) => {
+  const formData = new FormData()
+  formData.append("b64", data)
+
+  const response = await fetch(ML_API_URL, {
+    method: "POST",
+    body: formData
+  })
+
+  const base64 = await response.text()
+
+  return base64
 }
 
 const passwordHashing = password => password
 
 const resolvers = {
   Query: {
-    fromImage: (_, { data, toLang }) => {
-      const baybayinText = requestBaybayinOcr({ data })
+    fromImage: async (_, { data, toLang }) => {
+      const baybayinText = await requestBaybayinOcr({ data })
       const fromLang = inferLanguage(baybayinText)
       const translatorKey = `${fromLang}-${toLang}`
       const translator = translators.get(translatorKey)

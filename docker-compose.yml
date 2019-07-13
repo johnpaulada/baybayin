@@ -1,13 +1,18 @@
 version: "3.7"
 services:
 
-  api:
-    build: ./api
-    ports:
-      - 4000:4000
-    depends_on:
-      - mongo
+  # api:
+  #   build: ./api
+  #   ports:
+  #     - 4000:4000
+  #   depends_on:
+  #     - mongo
 
+  # ml:
+  #   build: ./ml
+  #   ports:
+  #     - 5000:5000
+    
   mongo:
     image: mongo
     restart: always
