@@ -1,0 +1,24 @@
+{
+  "name": "baybayin-api",
+  "version": "0.1.0",
+  "description": "Babybayin API",
+  "main": "index.js",
+  "dependencies": {
+    "graphql-shield": "^6.0.3",
+    "graphql-yoga": "^1.18.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.2.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "baybayin",
+    "filipino",
+    "api"
+  ],
+  "author": "Team Baybayin",
+  "license": "ISC"
+}
