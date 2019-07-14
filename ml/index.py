@@ -2,6 +2,7 @@ import base64
 import json
 from io import BytesIO
 
+import edlib
 import numpy as np
 import cv2
 
@@ -26,18 +27,12 @@ def bbox(img):
     bbox = np.min(a[0]), np.max(a[0]), np.min(a[1]), np.max(a[1])
     return bbox
 
-def preprocess(img):
-    rmin, rmax, cmin, cmax = bbox(img)
-    img_cropped = img[rmin:rmax, cmin:cmax].copy()
-
-    res = cv2.resize(img_cropped,
-                     dsize=(28, 28),
-                     interpolation=cv2.INTER_CUBIC)
-    return res/255.0
-
 MIN_AREA = 1000
 MAX_AREA = 100000
 EPS = 10
+
+with open('filipino_dict.txt', 'r') as f:
+    filipino_dict = f.read().split('\n')
 
 def extract_characters(img):
     # assumes that img is already grayed out
@@ -83,10 +78,34 @@ def extract_characters(img):
         results.append(img[lower_bound:upper_bound, a:b])
     return results
 
+def preprocess(img):
+    rmin, rmax, cmin, cmax = bbox(img)
+    img_cropped = img[rmin:rmax, cmin:cmax].copy()
+
+    res = cv2.resize(img_cropped,
+                     dsize=(28, 28),
+                     interpolation=cv2.INTER_CUBIC)
+    res = (res - res.min()) / (res.max() - res.min() + 1e-9)
+    return res
+
 def predict(img):
-    model = tfk.models.load_model('model.h5')
+    model = tfk.models.load_model('model_robust.h5')
     preds = model.predict(img.reshape(1, 28*28))[0]
     return preds
+
+def error_correct(msg, margin):
+    possible = msg
+    cur_error = 1e9
+    for word in filipino_dict:
+        error = edlib.align(msg, word, "NW", "distance", margin+1)['editDistance']
+        if error == -1 or error > margin:
+            continue
+        if error < cur_error:
+            cur_error = error
+            possible = word
+    if cur_error <= 2:
+        return possible
+    return msg
 
 labels = ['-a', '-i', '-u',
           'ba', 'bi', 'bu', 'b-',
@@ -119,9 +138,13 @@ def fromImage():
         preds = predict(char_processed)
         print(preds)
         idx = np.where(preds == preds.max())
-        res += labels[idx[0][0]]
-    print(len(characters))
-    return res
+
+        label = labels[idx[0][0]]
+        res += label[:-1] if label[-1] == '-' else label[1:] if label[0] == '-' else label
+
+    res_corrected = error_correct(res, margin=1) if len(characters) > 2 else res
+
+    return res_corrected
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
