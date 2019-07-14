@@ -19,14 +19,19 @@ const requestBaybayinOcr = async ({ _url, data }) => {
   const formData = new FormData()
   formData.append("b64", data)
 
-  const response = await fetch(ML_API_URL, {
-    method: "POST",
-    body: formData
-  })
+  try {
+    const response = await fetch(ML_API_URL, {
+      method: "POST",
+      body: formData
+    })
 
-  const base64 = await response.text()
+    const base64 = await response.text()
 
-  return base64
+    return base64
+  } catch (err) {
+    console.log(err)
+    return "NOO"
+  }
 }
 
 const passwordHashing = password => password
@@ -34,16 +39,23 @@ const passwordHashing = password => password
 const resolvers = {
   Query: {
     fromImage: async (_, { data, toLang }) => {
-      const baybayinText = await requestBaybayinOcr({ data })
-      const fromLang = inferLanguage(baybayinText)
-      const translatorKey = `${fromLang}-${toLang}`
-      const translator = translators.get(translatorKey)
-      const translatedText = translator(baybayinText)
+      try {
+        const baybayinText = await requestBaybayinOcr({ data })
+        const fromLang = inferLanguage(baybayinText)
+        const translatorKey = `${fromLang}-${toLang}`
+        const translator = translators.get(translatorKey)
+        const translatedText = translator(baybayinText)
 
-      console.log(baybayinText)
+        console.log(baybayinText)
 
-      return {
-        translatedText
+        return {
+          translatedText
+        }
+      } catch (err) {
+        console.log(err)
+        return {
+          translatedText: "NUU"
+        }
       }
     },
     fromText: (_, args) => {

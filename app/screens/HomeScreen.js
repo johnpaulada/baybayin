@@ -15,8 +15,11 @@ const HomeScreen = ({ navigation }) => {
 
   const snap = async () => {
     setSaving(true)
+    console.log(await cameraRef.current.getAvailablePictureSizesAsync())
     const { base64 } = await cameraRef.current.takePictureAsync({
-      base64: true
+      base64: true,
+      quality: 0.5,
+      exif: false
     })
     setSaving(false)
     navigation.navigate("Results", { base64 })
@@ -25,6 +28,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <Camera
+        pictureSize="Medium"
         style={{ flex: 1 }}
         type={Camera.Constants.Type.back}
         ref={cameraRef}
@@ -43,8 +47,15 @@ const HomeScreen = ({ navigation }) => {
   )
 }
 
-HomeScreen.navigationOptions = () => ({
+HomeScreen.navigationOptions = ({ navigation }) => ({
   title: "Snap some Baybayin text!"
+  // headerRight: (
+  //   <Button
+  //     onPress={() => navigation.navigate("Draw")}
+  //     title="> Draw Instead"
+  //     color="#333"
+  //   />
+  // )
 })
 
 export default HomeScreen

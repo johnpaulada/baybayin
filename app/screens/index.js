@@ -1,4 +1,5 @@
+import DrawScreen from "./DrawScreen"
 import HomeScreen from "./HomeScreen"
 import ResultsScreen from "./ResultsScreen"
 
-export { HomeScreen, ResultsScreen }
+export { DrawScreen, HomeScreen, ResultsScreen }

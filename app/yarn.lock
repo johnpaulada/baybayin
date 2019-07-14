@@ -953,6 +953,11 @@
     react-native-safe-area-view "^0.14.1"
     react-native-screens "^1.0.0 || ^1.0.0-alpha"
 
+"@terrylinla/react-native-sketch-canvas@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@terrylinla/react-native-sketch-canvas/-/react-native-sketch-canvas-0.8.0.tgz#3d3aa4ce2afb71bac2fbd512889e292d3265b264"
+  integrity sha512-rWLZkvYbbQ2Pje8AyT7+8nunXRNaOjfpJTYUHfUH1EVvRs+Es0rJlqoS1UmQbhKCXIra8xiBBD1jHs10S//mxg==
+
 "@types/fbemitter@^2.0.32":
   version "2.0.32"
   resolved "https://registry.yarnpkg.com/@types/fbemitter/-/fbemitter-2.0.32.tgz#8ed204da0f54e9c8eaec31b1eec91e25132d082c"
@@ -1920,6 +1925,11 @@ css-to-react-native@^2.2.2:
     camelize "^1.0.0"
     css-color-keywords "^1.0.0"
     postcss-value-parser "^3.3.0"
+
+ctx-polyfill@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/ctx-polyfill/-/ctx-polyfill-1.1.4.tgz#08420bc5c540d08ac36d05720ca503c65e302d65"
+  integrity sha1-CEILxcVA0IrDbQVyDKUDxl4wLWU=
 
 debounce@^1.2.0:
   version "1.2.0"
@@ -4816,6 +4826,13 @@ react-native-branch@2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-2.2.5.tgz#4074dd63b4973e6397d9ce50e97b57c77a518e9d"
   integrity sha1-QHTdY7SXPmOX2c5Q6XtXx3pRjp0=
+
+react-native-canvas@^0.1.33:
+  version "0.1.33"
+  resolved "https://registry.yarnpkg.com/react-native-canvas/-/react-native-canvas-0.1.33.tgz#e38a650e7d57b42faa717e7f3a1285d63d40e0f3"
+  integrity sha512-rYnMcU+xB0O00Dz+77xHQcnemkt1gf9dHukNzhilLN0nQbT0JwbF/fsVOZNlqucSpuWVr4LyKhFVrAE/qebBAQ==
+  dependencies:
+    ctx-polyfill "^1.1.4"
 
 react-native-gesture-handler@1.2.1:
   version "1.2.1"

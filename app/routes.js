@@ -1,5 +1,5 @@
 import { createAppContainer, createStackNavigator } from "react-navigation"
-import { HomeScreen, ResultsScreen } from "./screens"
+import { DrawScreen, HomeScreen, ResultsScreen } from "./screens"
 
 const AppNavigator = createStackNavigator({
   Home: {
@@ -7,6 +7,9 @@ const AppNavigator = createStackNavigator({
   },
   Results: {
     screen: ResultsScreen
+  },
+  Draw: {
+    screen: DrawScreen
   }
 })
 

@@ -6,6 +6,7 @@ import DescriptionText from "../components/DescriptionText"
 import DescriptionView from "../components/DescriptionView"
 import ImageView from "../components/ImageView"
 import Loading from "../components/Loading"
+import LoadingText from "../components/LoadingText"
 
 const TextFromBaybayin = gql`
   query FromBaybayin($base64: String!) {
@@ -21,7 +22,13 @@ const ResultsScreen = ({ navigation }) => {
     <View style={{ flex: 1, backgroundColor: "#fafafa" }}>
       <Query query={TextFromBaybayin} variables={{ base64 }}>
         {({ loading, error, data, refetch }) => {
-          if (loading) return <Loading />
+          if (loading)
+            return (
+              <Loading>
+                <LoadingText>LOADING...</LoadingText>
+              </Loading>
+            )
+
           if (error) {
             console.log(error)
             return []

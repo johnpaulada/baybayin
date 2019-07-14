@@ -2,3 +2,5 @@ flask
 tensorflow==2.0.0-beta1
 opencv-python
 pillow
+edlib
+waitress
