@@ -37,8 +37,8 @@ with open('filipino_dict.txt', 'r') as f:
 def extract_characters(img):
     # assumes that img is already grayed out
 
-    ret, thresh = cv2.threshold(img, 128, 255, cv2.THRESH_OTSU)
-    contours, heirarchy = cv2.findContours(thresh, 1, 2)
+    ret, thresh = cv2.threshold(img, 140, 255, cv2.THRESH_BINARY)
+    contours, heirarchy = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
     lower_bound = img.shape[1]
     upper_bound = 0
@@ -50,7 +50,7 @@ def extract_characters(img):
 
         area = w*h
 
-        if MIN_AREA < area < MAX_AREA:
+        if MIN_AREA < area:
             valid_bounds.append((x, y, w, h))
             lower_bound = min(lower_bound, y)
             upper_bound = max(upper_bound, y+h)
@@ -76,6 +76,11 @@ def extract_characters(img):
     for a, b in segments:
         print(a, b)
         results.append(img[lower_bound:upper_bound, a:b])
+        cv2.rectangle(thresh,(a,lower_bound),(b,upper_bound),(255,255,255),5)
+
+    cv2.imshow('img', thresh)
+    cv2.waitKey(0)
+
     return results
 
 def preprocess(img):
