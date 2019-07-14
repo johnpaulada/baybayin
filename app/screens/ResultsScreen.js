@@ -1,7 +1,11 @@
 import gql from "graphql-tag"
-import React from "react"
+import React, { Fragment } from "react"
 import { Query } from "react-apollo"
-import { Text, View } from "react-native"
+import { View } from "react-native"
+import DescriptionText from "../components/DescriptionText"
+import DescriptionView from "../components/DescriptionView"
+import ImageView from "../components/ImageView"
+import Loading from "../components/Loading"
 
 const TextFromBaybayin = gql`
   query FromBaybayin($base64: String!) {
@@ -14,18 +18,23 @@ const TextFromBaybayin = gql`
 const ResultsScreen = ({ navigation }) => {
   const base64 = navigation.getParam("base64", "")
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#fafafa" }}>
       <Query query={TextFromBaybayin} variables={{ base64 }}>
         {({ loading, error, data, refetch }) => {
-          if (loading) return []
+          if (loading) return <Loading />
           if (error) {
             console.log(error)
             return []
           }
           return (
-            <View style={{ padding: 50 }}>
-              <Text>{data ? data.fromImage.translatedText : ""}</Text>
-            </View>
+            <Fragment>
+              <ImageView />
+              <DescriptionView>
+                <DescriptionText>
+                  {data ? data.fromImage.translatedText : ""}
+                </DescriptionText>
+              </DescriptionView>
+            </Fragment>
           )
         }}
       </Query>

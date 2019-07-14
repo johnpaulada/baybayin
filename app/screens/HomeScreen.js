@@ -1,7 +1,9 @@
 import { Camera } from "expo-camera"
 import * as Permissions from "expo-permissions"
 import React, { useEffect, useRef, useState } from "react"
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native"
+import { ActivityIndicator, Text, View } from "react-native"
+import CameraView from "../components/CameraView"
+import CircleButton from "../components/CircleButton"
 
 const HomeScreen = ({ navigation }) => {
   const cameraRef = useRef(null)
@@ -27,32 +29,22 @@ const HomeScreen = ({ navigation }) => {
         type={Camera.Constants.Type.back}
         ref={cameraRef}
       >
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "transparent",
-            flexDirection: "column-reverse"
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              alignItems: "center",
-              flex: 0.1
-            }}
-            onPress={snap}
-          >
+        <CameraView>
+          <CircleButton onPress={snap}>
             {saving ? (
               <ActivityIndicator size="large" color="#0000ff" />
             ) : (
-              <Text style={{ fontSize: 18, marginBottom: 10, color: "white" }}>
-                Picture!
-              </Text>
+              <Text>{""}</Text>
             )}
-          </TouchableOpacity>
-        </View>
+          </CircleButton>
+        </CameraView>
       </Camera>
     </View>
   )
 }
+
+HomeScreen.navigationOptions = () => ({
+  title: "Snap some Baybayin text!"
+})
 
 export default HomeScreen
