@@ -5,6 +5,7 @@ const DescriptionText = styled.Text`
   background: transparent;
   font-size: 64;
   font-weight: 700;
+  font-family: nunito;
   color: #333;
 }
 `

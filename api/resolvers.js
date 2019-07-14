@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken")
 const fetch = require("isomorphic-fetch")
-const FormData = require('form-data')
+const FormData = require("form-data")
 const JWT_SECRET = "NOT_SO_SECRET"
 const ML_API_URL = "http://localhost:5000/fromImage/"
 
@@ -39,6 +39,8 @@ const resolvers = {
       const translatorKey = `${fromLang}-${toLang}`
       const translator = translators.get(translatorKey)
       const translatedText = translator(baybayinText)
+
+      console.log(baybayinText)
 
       return {
         translatedText
